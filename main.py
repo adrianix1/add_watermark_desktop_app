@@ -1,8 +1,7 @@
-from tkinter import Tk, Label, Button, filedialog
+from tkinter import Tk, Label, Button, filedialog, simpledialog
 from PIL import Image, ImageTk, ImageFont, ImageDraw
 
 pos = (0, 0)
-text = "I'm watermark!"
 fill = (93, 93, 93)
 
 
@@ -13,6 +12,10 @@ def open_save_file():
         pass
     else:
         img = Image.open(filename)
+
+        text = provide_text()
+        if len(text) == 0:
+            text = "I'm watermark!"
 
         w, h = img.size
         if h > 638:
@@ -34,20 +37,23 @@ def open_save_file():
         img = ImageTk.PhotoImage(img)
         label_img = Label(window, image=img)
         label_img.image = img
-        label_img.grid(row=1, column=0, columnspan=2, pady=10)
+        label_img.grid(row=2, column=0, columnspan=3, pady=10)
+
+
+def provide_text():
+    text = simpledialog.askstring(title="Watermark text", prompt="What text do you want to put on you image?:")
+    return text
 
 
 window = Tk()
 window.title("Watermarking app")
 window.minsize(650, 400)
 
-
 label = Label(text="Select the image that you want to watermark", font=("Helvetica", 14))
 label.grid(column=0, row=0, pady=5)
 
 button = Button(text="Select Image", command=open_save_file)
 button.grid(column=1, row=0, pady=5)
-
 
 window.columnconfigure(0, weight=1)
 window.columnconfigure(1, weight=1)
