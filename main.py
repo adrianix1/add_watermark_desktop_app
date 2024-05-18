@@ -1,5 +1,7 @@
 from tkinter import Tk, Label, Button, filedialog, simpledialog
 from PIL import Image, ImageTk, ImageFont, ImageDraw
+from tkinter.messagebox import showinfo
+import os
 
 pos = (0, 0)
 fill = (93, 93, 93)
@@ -32,12 +34,15 @@ def open_save_file():
         font = ImageFont.truetype("arial.ttf", 14)
         drawing.text(pos, text, fill=fill, font=font)
 
-        img.save(f"watermarked_{filename.split('/')[-1]}")
+        image_name = f"watermarked_{filename.split('/')[-1]}"
+        img.save(image_name)
 
         img = ImageTk.PhotoImage(img)
         label_img = Label(window, image=img)
         label_img.image = img
         label_img.grid(row=2, column=0, columnspan=3, pady=10)
+
+        showinfo("Info", f"Your image was successfully watermarked, you can find it here: {os.getcwd()}\{image_name}")
 
 
 def provide_text():
